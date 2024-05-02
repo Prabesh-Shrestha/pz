@@ -1,9 +1,6 @@
 pub mod pz {
-
-    use aes_gcm::Key;
-    use aes_gcm::{
-        aead::generic_array::GenericArray, aead::Aead, aead::OsRng, AeadCore, Aes256Gcm, KeyInit,
-    };
+    use aes_gcm::aead::{generic_array::GenericArray, Aead, OsRng};
+    use aes_gcm::{AeadCore, Aes256Gcm, KeyInit};
     use std::fs;
     use std::io::{Read, Write};
 
@@ -12,7 +9,7 @@ pub mod pz {
     }
     pub fn encrypt(key: [u8; 32], filename: String) {
         let mut content = fs::read_to_string(&filename).expect("Error while reading the file");
-        println!("content: {:#?}", content);
+        // println!("content: {:#?}", content);
         let cipher = Aes256Gcm::new(&key.into());
         let nonce = Aes256Gcm::generate_nonce(&mut OsRng);
         let ciphertext = cipher
@@ -20,8 +17,8 @@ pub mod pz {
             .expect("Couldnt Encrypt the File");
         content.clear();
 
-        println!("nonce: {:#?}", nonce);
-        println!("ciphertext: {:#?}", ciphertext);
+        // println!("nonce: {:#?}", nonce);
+        // println!("ciphertext: {:#?}", ciphertext);
 
         let mut outputfile = fs::OpenOptions::new()
             .write(true)
@@ -56,7 +53,7 @@ pub mod pz {
             .expect("couldnt read the ciphered text from the file");
 
         let cipher = Aes256Gcm::new(&key.into());
-        println!("nonce: {:#?}\nciphertext: {:#?}", nonce, content);
+        // println!("nonce: {:#?}\nciphertext: {:#?}", nonce, content);
         let plaintext = cipher
             .decrypt(&GenericArray::from_slice(&nonce), content.as_ref())
             .expect("Cannot Decrypt");
@@ -69,9 +66,9 @@ pub mod pz {
             .write_all(plaintext.as_ref())
             .expect("Couldnt Write to file");
 
-        println!(
-            "{:?}",
-            String::from_utf8(plaintext).expect("Error in the encoding of decrypted file")
-        )
+        // println!(
+        //     "{:?}",
+        //     String::from_utf8(plaintext).expect("Error in the encoding of decrypted file")
+        // )
     }
 }
