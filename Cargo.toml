@@ -7,5 +7,4 @@ edition = "2021"
 
 [dependencies]
 aes-gcm = "0.10.3"
-anyhow = "1.0.82"
-crypto = "0.5.1"
+clap = { version = "4.5.4", features = ["derive"] }
